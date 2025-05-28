@@ -61,54 +61,45 @@
   </button>
 </header>
 
-<section id="dashboard" class="mt-20 max-w-full px-6 overflow-x-auto">
-<h2 class="text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-green-600 via-lime-500 to-yellow-400 bg-clip-text text-transparent">
-  🌾 Smart Agriculture Dashboard 📊
-</h2>
+<section id="dashboard" class="mt-20 max-w-full px-4 sm:px-6 overflow-x-hidden">
+  <h2 class="text-4xl sm:text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-green-600 via-lime-500 to-yellow-400 bg-clip-text text-transparent">
+    🌾 Smart Agriculture Dashboard 📊
+  </h2>
 
-  <div class="flex space-x-8 justify-center">
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 justify-items-center">
     <!-- Soil Moisture -->
-    <div class="flex-shrink-0 w-72 rounded-2xl p-6 bg-gradient-to-tr from-green-50 via-white to-green-100 transition duration-300">
-      <h3 class="text-2xl font-semibold text-green-800 mb-3 text-center">💧 Soil Moisture</h3>
+    <div class="w-full max-w-xs rounded-2xl p-6 bg-gradient-to-tr from-green-50 via-white to-green-100 shadow transition duration-300">
+      <h3 class="text-xl sm:text-2xl font-semibold text-green-800 mb-3 text-center">💧 Soil Moisture</h3>
       <div class="w-full h-40">
         <canvas id="moistureChart" class="w-full h-full"></canvas>
       </div>
     </div>
 
     <!-- Temperature -->
-    <div class="flex-shrink-0 w-72 rounded-2xl p-6 bg-gradient-to-tr from-blue-50 via-white to-blue-100 transition duration-300">
-      <h3 class="text-2xl font-semibold text-blue-800 mb-3 text-center">🌡️ Temperature</h3>
+    <div class="w-full max-w-xs rounded-2xl p-6 bg-gradient-to-tr from-blue-50 via-white to-blue-100 shadow transition duration-300">
+      <h3 class="text-xl sm:text-2xl font-semibold text-blue-800 mb-3 text-center">🌡️ Temperature</h3>
       <div class="w-full h-40">
         <canvas id="tempChart" class="w-full h-full"></canvas>
       </div>
     </div>
 
-    <!-- Crop Health -->
-    <div class="flex-shrink-0 w-72 rounded-2xl p-6 bg-gradient-to-tr from-yellow-50 via-white to-yellow-100 transition duration-300">
-      <h3 class="text-2xl font-semibold text-yellow-700 mb-3 text-center">🌿 Crop Health</h3>
-      <div class="w-full h-40">
-        <canvas id="healthChart" class="w-full h-full"></canvas>
-      </div>
-    </div>
-
     <!-- Rainfall -->
-    <div class="flex-shrink-0 w-72 rounded-2xl p-6 bg-gradient-to-tr from-indigo-50 via-white to-indigo-100 transition duration-300">
-      <h3 class="text-2xl font-semibold text-indigo-800 mb-3 text-center">🌧️ Rainfall</h3>
+    <div class="w-full max-w-xs rounded-2xl p-6 bg-gradient-to-tr from-indigo-50 via-white to-indigo-100 shadow transition duration-300">
+      <h3 class="text-xl sm:text-2xl font-semibold text-indigo-800 mb-3 text-center">🌧️ Rainfall</h3>
       <div class="w-full h-40">
         <canvas id="rainfallChart" class="w-full h-full"></canvas>
       </div>
     </div>
 
     <!-- Soil pH -->
-    <div class="flex-shrink-0 w-72 rounded-2xl p-6 bg-gradient-to-tr from-pink-50 via-white to-pink-100 transition duration-300">
-      <h3 class="text-2xl font-semibold text-pink-700 mb-3 text-center">⚗️ Soil pH</h3>
+    <div class="w-full max-w-xs rounded-2xl p-6 bg-gradient-to-tr from-pink-50 via-white to-pink-100 shadow transition duration-300">
+      <h3 class="text-xl sm:text-2xl font-semibold text-pink-700 mb-3 text-center">⚗️ Soil pH</h3>
       <div class="w-full h-40">
         <canvas id="phChart" class="w-full h-full"></canvas>
       </div>
     </div>
   </div>
 </section>
-
 
 
 
@@ -280,7 +271,7 @@
 </section>
 
 
- <script>
+<script>
   tailwind.config = {
     darkMode: 'class',
     theme: {
@@ -319,7 +310,6 @@
   window.addEventListener('DOMContentLoaded', () => {
     const moistureCtx = document.getElementById('moistureChart').getContext('2d');
     const tempCtx = document.getElementById('tempChart').getContext('2d');
-    const healthCtx = document.getElementById('healthChart').getContext('2d');
     const rainfallCtx = document.getElementById('rainfallChart').getContext('2d');
     const phCtx = document.getElementById('phChart').getContext('2d');
 
@@ -365,24 +355,6 @@
         plugins: { legend: { display: false } },
         scales: {
           y: { beginAtZero: false }
-        }
-      }
-    });
-
-    new Chart(healthCtx, {
-      type: 'doughnut',
-      data: {
-        labels: ['Healthy', 'Diseased', 'At Risk'],
-        datasets: [{
-          data: [70, 20, 10],
-          backgroundColor: ['#D9EAD3', '#F28B82', '#F9E79F'],
-          hoverOffset: 30,
-        }]
-      },
-      options: {
-        responsive: true,
-        plugins: {
-          legend: { position: 'bottom' }
         }
       }
     });
@@ -436,6 +408,7 @@
     });
   });
 </script>
+
 
 
 </body>
