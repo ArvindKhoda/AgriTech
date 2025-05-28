@@ -26,7 +26,7 @@ def login():
     return render_template('login.html')
 
 # Login Request Handler
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/lr', methods=['GET', 'POST'])
 def loginrequest():
     if request.method == 'POST':
         username = request.form.get('username')
