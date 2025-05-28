@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Crop Recommendation Result</title>
+  <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/2909/2909753.png" type="image/png">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    .glass-card {
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center px-4 py-10 font-sans text-gray-800 bg-gradient-to-r {{ bg_class }}">
+
+  <h1 class="text-5xl font-extrabold text-green-800 mb-4 drop-shadow-lg">🌾 Recommended Crop</h1>
+  <p class="text-xl text-gray-700 italic mb-10 text-center">Your ideal crop and farming suggestions based on your data</p>
+
+  <div class="glass-card w-full max-w-4xl p-8 rounded-2xl shadow-2xl transition hover:shadow-green-200">
+    
+    <!-- Predicted Crop -->
+    <div class="mb-8">
+      <h2 class="text-3xl font-semibold text-green-700 flex items-center gap-2">🌱 Best Crop to Grow:</h2>
+      <p class="text-4xl font-extrabold text-green-900 mt-3 underline decoration-green-400 underline-offset-4">{{ result }}</p>
+    </div>
+
+    <!-- Practical Tips -->
+    {% if insights.practical_tips %}
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-2">🌿 Practical Farming Tips:</h2>
+      <ul class="list-disc list-inside text-lg text-gray-800 space-y-1">
+        {% for tip in insights.practical_tips %}
+          <li>{{ tip }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+    {% endif %}
+
+    <!-- Ideal Conditions -->
+    {% if insights.ideal_conditions %}
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-2">🌤️ Ideal Growing Conditions:</h2>
+      <ul class="list-disc list-inside text-lg text-gray-800 space-y-1">
+        <li><strong>Temperature:</strong> {{ insights.ideal_conditions.temperature }}</li>
+        <li><strong>Humidity:</strong> {{ insights.ideal_conditions.humidity }}</li>
+        <li><strong>Soil pH:</strong> {{ insights.ideal_conditions.soil_ph }}</li>
+      </ul>
+    </div>
+    {% endif %}
+
+    <!-- Market Insights -->
+    {% if insights.market_insights %}
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold text-gray-700 mb-2">📈 Market Insights:</h2>
+      <p class="text-lg text-gray-800 leading-relaxed tracking-wide">{{ insights.market_insights }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Try Again Button -->
+    <div class="flex justify-end">
+      <a href="/home/CRS" class="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg font-semibold shadow-md transition hover:scale-105 duration-300 ease-in-out">
+        🔁 Try Again
+      </a>
+    </div>
+
+  </div>
+
+</body>
+</html>

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AgriTech Smart Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            inter: ['Inter', 'sans-serif']
+          },
+          colors: {
+            farmgreen: '#4CAF50',
+            soilbrown: '#8B5E3C',
+            wheat: '#FAF3E0',
+            aqua: '#00BCD4',
+          },
+        },
+      },
+    };
+  </script>
+</head>
+<body class="bg-[#5A4A33] text-gray-100 font-inter dark:bg-gray-900 dark:text-gray-200">
+
+
+
+<header class="bg-farmgreen text-white p-4 md:px-8 flex items-center justify-between shadow-md sticky top-0 z-50">
+  <div class="flex items-center space-x-3 select-none">
+    <!-- Logo icon -->
+    <span class="text-4xl leading-none">🌾</span>
+    <!-- Title -->
+    <h1 class="text-3xl font-extrabold tracking-wide">AgriTech Dashboard</h1>
+  </div>
+
+<!-- Navigation Menu: Hidden on small screens -->
+<nav class="hidden md:flex space-x-12 text-xl font-semibold" role="navigation" aria-label="Primary Navigation">
+  <a href="#dashboard" class="focus:outline-none focus:ring-2 focus:ring-white rounded">🌾 Dashboard</a>
+  <a href="#services" class="focus:outline-none focus:ring-2 focus:ring-white rounded">🔧 Services</a>
+  <a href="#land" class="focus:outline-none focus:ring-2 focus:ring-white rounded">🌱 My Land</a>
+  <a href="#marketplace" class="focus:outline-none focus:ring-2 focus:ring-white rounded">🚜 Marketplace</a>
+</nav>
+
+
+
+  <!-- Mobile menu button -->
+  <button id="menuToggle" aria-label="Toggle menu" aria-expanded="false" class="md:hidden flex items-center justify-center p-2 rounded-md hover:bg-white hover:bg-opacity-20 focus:outline-none focus:ring-2 focus:ring-white transition">
+    <svg class="w-6 h-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" >
+      <path d="M4 6h16M4 12h16M4 18h16"></path>
+    </svg>
+  </button>
+
+  <!-- Dark mode toggle -->
+  <button onclick="toggleDarkMode()" aria-label="Toggle dark mode" class="ml-4 bg-white text-farmgreen px-3 py-1.5 rounded-md font-semibold hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-farmgreen dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700 transition">
+    🌓 Toggle Dark
+  </button>
+</header>
+
+<section id="dashboard" class="mt-20 max-w-full px-6 overflow-x-auto">
+<h2 class="text-5xl font-extrabold text-center mb-10 bg-gradient-to-r from-green-600 via-lime-500 to-yellow-400 bg-clip-text text-transparent">
+  🌾 Smart Agriculture Dashboard 📊
+</h2>
+
+  <div class="flex space-x-8 justify-center">
+    <!-- Soil Moisture -->
+    <div class="flex-shrink-0 w-72 rounded-2xl p-6 bg-gradient-to-tr from-green-50 via-white to-green-100 transition duration-300">
+      <h3 class="text-2xl font-semibold text-green-800 mb-3 text-center">💧 Soil Moisture</h3>
+      <div class="w-full h-40">
+        <canvas id="moistureChart" class="w-full h-full"></canvas>
+      </div>
+    </div>
+
+    <!-- Temperature -->
+    <div class="flex-shrink-0 w-72 rounded-2xl p-6 bg-gradient-to-tr from-blue-50 via-white to-blue-100 transition duration-300">
+      <h3 class="text-2xl font-semibold text-blue-800 mb-3 text-center">🌡️ Temperature</h3>
+      <div class="w-full h-40">
+        <canvas id="tempChart" class="w-full h-full"></canvas>
+      </div>
+    </div>
+
+    <!-- Crop Health -->
+    <div class="flex-shrink-0 w-72 rounded-2xl p-6 bg-gradient-to-tr from-yellow-50 via-white to-yellow-100 transition duration-300">
+      <h3 class="text-2xl font-semibold text-yellow-700 mb-3 text-center">🌿 Crop Health</h3>
+      <div class="w-full h-40">
+        <canvas id="healthChart" class="w-full h-full"></canvas>
+      </div>
+    </div>
+
+    <!-- Rainfall -->
+    <div class="flex-shrink-0 w-72 rounded-2xl p-6 bg-gradient-to-tr from-indigo-50 via-white to-indigo-100 transition duration-300">
+      <h3 class="text-2xl font-semibold text-indigo-800 mb-3 text-center">🌧️ Rainfall</h3>
+      <div class="w-full h-40">
+        <canvas id="rainfallChart" class="w-full h-full"></canvas>
+      </div>
+    </div>
+
+    <!-- Soil pH -->
+    <div class="flex-shrink-0 w-72 rounded-2xl p-6 bg-gradient-to-tr from-pink-50 via-white to-pink-100 transition duration-300">
+      <h3 class="text-2xl font-semibold text-pink-700 mb-3 text-center">⚗️ Soil pH</h3>
+      <div class="w-full h-40">
+        <canvas id="phChart" class="w-full h-full"></canvas>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+
+
+ <!-- AgriTech Smart Services -->
+<section class="mt-24 max-w-7xl mx-auto px-6">
+  <h2 class="text-5xl font-bold text-center mb-10 bg-gradient-to-r from-green-600 via-lime-500 to-yellow-400 bg-clip-text text-transparent">
+    🌿✨ Smart Farming Services ✨🌿
+  </h2>
+
+  <div class="flex flex-wrap justify-center gap-6">
+    
+    <!-- Crop Recommendation -->
+    <div class="flex-shrink-0 w-72 rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-green-50 via-white to-green-100 hover:shadow-2xl transition-shadow duration-300">
+      <h3 class="text-2xl font-semibold text-green-800 mb-3">🌾 Crop Recommendation</h3>
+      <p class="text-gray-700 mb-5">Get tailored crop suggestions based on your soil, weather, and land conditions.</p>
+      <a href="/home/CRS" class="inline-block px-6 py-2 rounded-full text-white font-medium bg-green-600 hover:bg-green-700 transition duration-200">
+        Recommend Crops
+      </a>
+    </div>
+
+    <!-- Disease Detection -->
+    <div class="flex-shrink-0 w-72 rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-red-50 via-white to-red-100 hover:shadow-2xl transition-shadow duration-300">
+      <h3 class="text-2xl font-semibold text-red-800 mb-3">🦠 Disease Detection</h3>
+      <p class="text-gray-700 mb-5">Upload crop images to detect and diagnose diseases using AI-powered tools.</p>
+      <a href="/home/disease_detect" class="inline-block px-6 py-2 rounded-full text-white font-medium bg-red-600 hover:bg-red-700 transition duration-200">
+        Detect Now
+      </a>
+    </div>
+
+    <!-- Weather Forecast -->
+    <div class="flex-shrink-0 w-72 rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-blue-50 via-white to-blue-100 hover:shadow-2xl transition-shadow duration-300">
+      <h3 class="text-2xl font-semibold text-blue-800 mb-3">🌦️ Weather Forecast</h3>
+      <p class="text-gray-700 mb-5">Stay updated with weather insights to optimize your irrigation and harvesting.</p>
+      <a href="/home/weather_forecast" class="inline-block px-6 py-2 rounded-full text-white font-medium bg-blue-600 hover:bg-blue-700 transition duration-200">
+        View Forecast
+      </a>
+    </div>
+
+    <!-- Soil Testing -->
+    <div class="flex-shrink-0 w-72 rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-yellow-50 via-white to-yellow-100 hover:shadow-2xl transition-shadow duration-300">
+      <h3 class="text-2xl font-semibold text-yellow-800 mb-3">🧪 Soil Testing</h3>
+      <p class="text-gray-700 mb-5">Analyze soil nutrients and pH levels for better crop planning and fertility.</p>
+      <a href="/home/soil_test" class="inline-block px-6 py-2 rounded-full text-white font-medium bg-yellow-600 hover:bg-yellow-700 transition duration-200">
+        Test Soil
+      </a>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- My Land -->
+<section id="land" class="mt-24 max-w-7xl mx-auto px-6">
+  <h2 class="text-5xl font-bold text-center mb-10 bg-gradient-to-r from-green-600 via-lime-500 to-yellow-400 bg-clip-text text-transparent">
+    🌍 My Land Overview
+  </h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 justify-center">
+
+    <!-- Fertilizer Schedule -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-amber-50 via-white to-amber-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-amber-800 mb-4">🧴 Fertilizer Schedule</h3>
+      <p class="text-gray-700 text-base">Next application: <strong>In 3 days</strong></p>
+      <p class="text-gray-700 text-base">Recommended type: <strong>NPK 20-20-20</strong></p>
+    </div>
+
+    <!-- Pest Alerts -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-red-50 via-white to-red-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-red-800 mb-4">🐞 Pest Alerts</h3>
+      <p class="text-gray-700 text-base">No current pest threats detected. 🛡️</p>
+      <p class="text-gray-700 text-base">Last scan: <strong>1 day ago</strong></p>
+    </div>
+
+    <!-- Harvest Forecast -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-green-50 via-white to-green-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-green-800 mb-4">📅 Harvest Forecast</h3>
+      <p class="text-gray-700 text-base">Estimated harvest date: <strong>2 weeks</strong></p>
+      <p class="text-gray-700 text-base">Expected yield: <strong>3 tons</strong></p>
+    </div>
+
+    <!-- Irrigation Schedule -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-blue-50 via-white to-blue-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-blue-800 mb-4">💧 Irrigation Schedule</h3>
+      <p class="text-gray-700 text-base">Next irrigation: <strong>Tomorrow</strong></p>
+      <p class="text-gray-700 text-base">Duration: <strong>2 hours</strong></p>
+    </div>
+
+    <!-- Soil Nutrient Levels -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-yellow-50 via-white to-yellow-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-yellow-700 mb-4">🧪 Soil Nutrient Levels</h3>
+      <ul class="text-gray-700 text-base space-y-1">
+        <li>Nitrogen (N): <strong>45 mg/kg</strong></li>
+        <li>Phosphorus (P): <strong>30 mg/kg</strong></li>
+        <li>Potassium (K): <strong>50 mg/kg</strong></li>
+      </ul>
+    </div>
+
+    <!-- Sunlight Exposure -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-indigo-50 via-white to-indigo-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-indigo-800 mb-4">☀️ Sunlight Exposure</h3>
+      <p class="text-gray-700 text-base">Average daily sunlight: <strong>7 hours</strong></p>
+      <p class="text-gray-700 text-base">Optimal for current crop: <strong>Yes</strong></p>
+    </div>
+
+    <!-- Land Info -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-yellow-50 via-white to-yellow-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-yellow-800 mb-4">🗺️ Land Info</h3>
+      <ul class="text-gray-700 text-base space-y-3">
+        <li><strong>Location:</strong> Nashik</li>
+        <li><strong>Size:</strong> 5 acres</li>
+        <li><strong>Soil Type:</strong> Loamy</li>
+        <li><strong>Water Source:</strong> Moderate (Tube Well)</li>
+      </ul>
+    </div>
+
+    <!-- Current Insights -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-green-50 via-white to-green-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-green-800 mb-4">🌱 Current Insights</h3>
+      <ul class="text-gray-700 text-base space-y-3">
+        <li>🌾 Crop: <strong>Wheat</strong></li>
+        <li>💧 Irrigation needed in 2 days</li>
+        <li>🧪 Add potassium-based fertilizer</li>
+        <li>📅 Ready for harvest in 14 days</li>
+      </ul>
+    </div>
+
+    <!-- Pest Alerts -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-red-50 via-white to-red-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-red-700 mb-4">🐛 Pest Alerts</h3>
+      <ul class="text-gray-700 text-base space-y-3">
+        <li>⚠️ Aphid infestation detected in northern field</li>
+        <li>🛡️ Recommended treatment: Neem oil spray</li>
+        <li>📅 Next inspection in 3 days</li>
+      </ul>
+    </div>
+
+    <!-- Equipment Status -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-blue-50 via-white to-blue-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-blue-800 mb-4">🚜 Equipment Status</h3>
+      <ul class="text-gray-700 text-base space-y-3">
+        <li>🔧 Tractor: Maintenance due in 7 days</li>
+        <li>💡 Irrigation system: Operational</li>
+        <li>⚡ Solar panels: 85% efficiency</li>
+      </ul>
+    </div>
+
+    <!-- Market Prices -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-purple-50 via-white to-purple-100 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-purple-700 mb-4">💰 Market Prices</h3>
+      <ul class="text-gray-700 text-base space-y-3">
+        <li>🌾 Wheat: ₹2000 per quintal</li>
+        <li>🌽 Corn: ₹1800 per quintal</li>
+        <li>🥔 Potatoes: ₹1500 per quintal</li>
+      </ul>
+    </div>
+
+    <!-- Sustainability Tips -->
+    <div class="flex-shrink-0 w-full rounded-2xl p-6 shadow-xl bg-gradient-to-tr from-green-100 via-white to-green-50 hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105">
+      <h3 class="text-2xl font-semibold text-green-700 mb-4">🌿 Sustainability Tips</h3>
+      <ul class="text-gray-700 text-base space-y-3">
+        <li>💧 Practice drip irrigation to save water</li>
+        <li>♻️ Use organic fertilizers to improve soil health</li>
+        <li>🌻 Plant cover crops to prevent soil erosion</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+
+ <script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        fontFamily: {
+          inter: ['Inter', 'sans-serif']
+        },
+        colors: {
+          farmgreen: '#4CAF50',
+          soilbrown: '#8B5E3C',
+          wheat: '#FAF3E0',
+          aqua: '#00BCD4',
+        },
+      },
+    },
+  };
+
+  // Dark mode toggle function
+  function toggleDarkMode() {
+    document.documentElement.classList.toggle('dark');
+  }
+
+  // Mobile menu toggle handler
+  document.addEventListener('DOMContentLoaded', () => {
+    const menuToggle = document.getElementById('menuToggle');
+    const nav = document.querySelector('nav[role="navigation"]');
+
+    menuToggle.addEventListener('click', () => {
+      const expanded = menuToggle.getAttribute('aria-expanded') === 'true' || false;
+      menuToggle.setAttribute('aria-expanded', !expanded);
+      nav.classList.toggle('hidden');
+    });
+  });
+
+  // Chart.js initialization with sample data
+  window.addEventListener('DOMContentLoaded', () => {
+    const moistureCtx = document.getElementById('moistureChart').getContext('2d');
+    const tempCtx = document.getElementById('tempChart').getContext('2d');
+    const healthCtx = document.getElementById('healthChart').getContext('2d');
+    const rainfallCtx = document.getElementById('rainfallChart').getContext('2d');
+    const phCtx = document.getElementById('phChart').getContext('2d');
+
+    new Chart(moistureCtx, {
+      type: 'line',
+      data: {
+        labels: ['6am', '9am', '12pm', '3pm', '6pm', '9pm'],
+        datasets: [{
+          label: 'Soil Moisture (%)',
+          data: [45, 48, 44, 42, 40, 38],
+          borderColor: '#4CAF50',
+          backgroundColor: 'rgba(76, 175, 80, 0.2)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, max: 100 }
+        }
+      }
+    });
+
+    new Chart(tempCtx, {
+      type: 'line',
+      data: {
+        labels: ['6am', '9am', '12pm', '3pm', '6pm', '9pm'],
+        datasets: [{
+          label: 'Temperature (°C)',
+          data: [20, 23, 27, 28, 24, 22],
+          borderColor: '#2196F3',
+          backgroundColor: 'rgba(33, 150, 243, 0.2)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: 3,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: false }
+        }
+      }
+    });
+
+    new Chart(healthCtx, {
+      type: 'doughnut',
+      data: {
+        labels: ['Healthy', 'Diseased', 'At Risk'],
+        datasets: [{
+          data: [70, 20, 10],
+          backgroundColor: ['#D9EAD3', '#F28B82', '#F9E79F'],
+          hoverOffset: 30,
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: 'bottom' }
+        }
+      }
+    });
+
+    new Chart(rainfallCtx, {
+      type: 'bar',
+      data: {
+        labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+        datasets: [{
+          label: 'Rainfall (mm)',
+          data: [0, 5, 12, 8, 0, 3, 0],
+          backgroundColor: '#5C6BC0',
+          borderRadius: 4,
+          barPercentage: 0.6
+        }]
+      },
+      options: {
+        responsive: true,
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true }
+        }
+      }
+    });
+
+    new Chart(phCtx, {
+      type: 'radar',
+      data: {
+        labels: ['pH 4', 'pH 5', 'pH 6', 'pH 7', 'pH 8', 'pH 9'],
+        datasets: [{
+          label: 'Soil pH Levels',
+          data: [5, 10, 18, 25, 15, 7],
+          borderColor: '#EC407A',
+          backgroundColor: 'rgba(236, 64, 122, 0.3)',
+          fill: true,
+          pointRadius: 4,
+          pointHoverRadius: 6,
+        }]
+      },
+      options: {
+        responsive: true,
+        scales: {
+          r: {
+            min: 0,
+            max: 30,
+            ticks: { stepSize: 5 }
+          }
+        },
+        plugins: { legend: { display: false } }
+      }
+    });
+  });
+</script>
+
+
+</body>
+</html>
